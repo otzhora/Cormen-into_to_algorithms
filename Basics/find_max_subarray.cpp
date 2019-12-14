@@ -72,6 +72,31 @@ result find_max_subarray(int *A, int l, int r) {
   return cross;
 }
 
+
+result find_max_subarray_O_n(int *A, int _, int n) {
+  
+  int *partial_sums = new int[n];
+  partial_sums[0] = A[0];
+  for (int i = 1; i < n; i++) {
+    partial_sums[i] = partial_sums[i-1] + A[i];
+  }
+
+  int curr_min_i = 0, curr_min_v = A[0], ans = A[0], ans_l = 0, ans_r = 0;
+  for (int i = 1; i < n; i++) {
+    if(ans < partial_sums[i] - curr_min_v) {
+      ans = partial_sums[i] - curr_min_v;
+      ans_l = curr_min_i + 1;
+      ans_r = i;
+    }
+
+    if(partial_sums[i] < curr_min_v) {
+      curr_min_v = partial_sums[i];
+      curr_min_i = i;
+    }
+  }
+  return result(ans_l, ans_r, ans);
+}
+
 int main()
 {
   srand(42); // for seed=42 answer is 7 14 169
@@ -79,7 +104,7 @@ int main()
   int n = 20;
   int *A = random_int_array(n, 100, true);
   print_array(A, n);
-  result r = find_max_subarray(A, 0, n-1);
+  result r = find_max_subarray_O_n(A, 0, n-1);
   cout << r.l << " " << r.r << " " << r.sum << endl;
   return 0;
 }
