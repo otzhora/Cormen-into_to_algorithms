@@ -1,3 +1,5 @@
 .vscode
 *.out
 *.dSym
+
+main.cpp
